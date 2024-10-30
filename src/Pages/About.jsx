@@ -42,6 +42,7 @@ function About() {
       <h1 className="text-3xl font-bold text-gray-800">
         Movie Search <span className="text-blue-600">ID: {id}</span>
       </h1> 
+      <p className="text-lg text-gray-500">Search for a Movie Title...</p>
 
       {data ? (
         <div className='text-center'>
