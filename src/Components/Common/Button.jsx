@@ -11,7 +11,7 @@ function Button(props) {
     return(
     <div>
       
-      <button className={`${Colors} m-11  text-white text-semibold p-3 rounded-md shadow-xl ${Butzize} h-[50px]`}
+      <button className={`${Colors} hover:bg-green-600 transition duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2   text-white text-semibold p-3 rounded-md shadow-xl ${Butzize} h-[50px]`}
       onClick={()=> Navigate(`/movie/${props.id}`)}>{props.title}</button>
     </div>
   )
