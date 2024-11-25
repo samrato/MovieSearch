@@ -5,7 +5,8 @@ function About() {
   const [data, setData] = useState(null)
   const { id } = useParams()
   const [title, setTitle] = useState('')
-  
+  const [showPopup, setShowPopup] = useState(false)
+
   const handleChange = (e) => {
     setTitle(e.target.value)
   }
@@ -30,6 +31,7 @@ function About() {
       const response = await fetch(`${OMDBLink}/?t=${title}&apikey=${APIkey}`)
       const result = await response.json()
       setData(result)
+      setShowPopup(true) // Show popup with movie data
     } catch (error) {
       console.error("Error fetching data:", error)
     }
@@ -47,63 +49,8 @@ function About() {
 
   return (
     <div className='flex flex-col items-center justify-center p-6 space-y-6 bg-gradient-to-b from-gray-100 via-gray-200 to-gray-300 min-h-screen'>
-      <h1 className="text-3xl font-bold text-gray-800">
-        Movie Search <span className="text-blue-600">{id ? `ID: ${id}` : ''}</span>
-      </h1>
+      <h1 className="text-3xl font-bold text-gray-800">Movie Search</h1>
       <p className="text-lg text-gray-500">Search for a Movie by Title Name...</p>
-
-      {/* Display Movie Data */}
-      {data ? (
-        <div className='text-center'>
-          <p className="text-2xl font-semibold text-gray-700 mb-4">{data.Title}</p>
-          {data.Poster && (
-            <div className="flex justify-center items-center">
-              <img 
-                src={data.Poster} 
-                alt="Movie Poster" 
-                className="w-full max-w-md rounded-lg shadow-lg border-2 border-gray-200 mb-4" 
-              />
-            </div>
-          )}
-          <p className="mt-4 text-lg text-gray-600">
-            <span className="font-semibold text-gray-800">Synopsis: </span>
-            {data.Plot || "No synopsis available."}
-          </p>
-          <p className="mt-2 text-lg text-gray-600">
-            <span className="font-semibold text-gray-800">Director: </span>
-            {data.Director || "No director information available."}
-          </p>
-          <div className="mt-4">
-            <h3 className="text-xl font-semibold text-gray-800">Cast</h3>
-            <div className="flex flex-wrap items-center justify-center gap-4 mt-2">
-              {data.Actors 
-                ? data.Actors.split(', ').map((actor) => (
-                  <div key={actor} className="flex flex-col items-center">
-                    <img 
-                      src={getCharacterImage(actor)} 
-                      alt={`${actor} Profile`} 
-                      className="w-20 h-20 rounded-full shadow-lg border border-gray-300"
-                    />
-                    <p className="mt-2 text-sm text-gray-700 font-medium">{actor}</p>
-                  </div>
-                ))
-                : <p>No cast information available.</p>
-              }
-            </div>
-          </div>
-          {data.Poster && (
-            <a 
-              href={data.Poster} 
-              download={`${data.Title}-Poster.jpg`} 
-              className='mt-6 inline-block p-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-200 shadow focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2'
-            >
-              Download Poster
-            </a>
-          )}
-        </div>
-      ) : (
-        <p className="text-lg text-gray-500">Loading movie data...</p>
-      )}
 
       {/* Search Input */}
       <div className='flex items-center w-full max-w-lg space-x-2'>
@@ -120,6 +67,46 @@ function About() {
           Search
         </button>
       </div>
+
+      {/* Card Format */}
+      {data && (
+        <div className='bg-white rounded-lg shadow-md p-6 max-w-xl w-full'>
+          <div className='flex flex-col items-center'>
+            <img 
+              src={data.Poster} 
+              alt="Movie Poster" 
+              className='w-full max-w-sm rounded-lg shadow-lg mb-4' 
+            />
+            <h2 className='text-2xl font-bold text-gray-800'>{data.Title}</h2>
+            <p className="mt-4 text-gray-600">
+              <span className="font-semibold text-gray-800">Synopsis: </span>
+              {data.Plot || "No synopsis available."}
+            </p>
+            <p className="mt-2 text-gray-600">
+              <span className="font-semibold text-gray-800">Director: </span>
+              {data.Director || "No director information available."}
+            </p>
+            <div className="mt-6 w-full">
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">Cast</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                {data.Actors 
+                  ? data.Actors.split(', ').map((actor) => (
+                    <div key={actor} className="flex flex-col items-center bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                      <img 
+                        src={getCharacterImage(actor)} 
+                        alt={`${actor} Profile`} 
+                        className="w-20 h-20 rounded-full shadow-lg border border-gray-300 mb-2"
+                      />
+                      <p className="text-center text-sm font-medium text-gray-700">{actor}</p>
+                    </div>
+                  ))
+                  : <p>No cast information available.</p>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
