@@ -13,6 +13,7 @@ function About() {
   const OMDBLink = import.meta.env.VITE_PUBLIC_OMDB_URL
   const APIkey = import.meta.env.VITE_OMDB_API
 
+  // Fetch movie by ID
   async function fetchMovie() {
     try {
       const response = await fetch(`${OMDBLink}/?i=tt${id}&apikey=${APIkey}`)
@@ -23,6 +24,7 @@ function About() {
     }
   }
 
+  // Fetch movie by title
   async function searchMovieByTitle() {
     try {
       const response = await fetch(`${OMDBLink}/?t=${title}&apikey=${APIkey}`)
@@ -34,20 +36,35 @@ function About() {
   }
 
   useEffect(() => {
-    fetchMovie()
+    if (id) fetchMovie()
   }, [id])
 
   return (
     <div className='flex flex-col items-center justify-center p-6 space-y-6 bg-gradient-to-b from-gray-100 via-gray-200 to-gray-300 min-h-screen'>
       <h1 className="text-3xl font-bold text-gray-800">
-        Movie Search <span className="text-blue-600">ID: {id}</span>
-      </h1> 
+        Movie Search <span className="text-blue-600">{id ? `ID: ${id}` : ''}</span>
+      </h1>
       <p className="text-lg text-gray-500">Search for a Movie by Title Name...</p>
 
+      {/* Display Movie Data */}
       {data ? (
         <div className='text-center'>
           <p className="text-2xl font-semibold text-gray-700 mb-4">{data.Title}</p>
-          <img src={data.Poster} alt="Movie Poster" className='w-full max-w-md rounded-lg shadow-lg border-2 border-gray-200' />
+          {data.Poster && (
+            <img src={data.Poster} alt="Movie Poster" className='w-full max-w-md rounded-lg shadow-lg border-2 border-gray-200' />
+          )}
+          <p className="mt-4 text-lg text-gray-600">
+            <span className="font-semibold text-gray-800">Synopsis: </span>
+            {data.Plot || "No synopsis available."}
+          </p>
+          <p className="mt-2 text-lg text-gray-600">
+            <span className="font-semibold text-gray-800">Actors: </span>
+            {data.Actors || "No cast information available."}
+          </p>
+          <p className="mt-2 text-lg text-gray-600">
+            <span className="font-semibold text-gray-800">Director: </span>
+            {data.Director || "No director information available."}
+          </p>
           {data.Poster && (
             <a 
               href={data.Poster} 
@@ -62,6 +79,7 @@ function About() {
         <p className="text-lg text-gray-500">Loading movie data...</p>
       )}
 
+      {/* Search Input */}
       <div className='flex items-center w-full max-w-lg space-x-2'>
         <input 
           type='text' 
