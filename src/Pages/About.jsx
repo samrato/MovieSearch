@@ -39,6 +39,12 @@ function About() {
     if (id) fetchMovie()
   }, [id])
 
+  // Helper to fetch character images (mock or placeholder)
+  const getCharacterImage = (name) => {
+    const baseUrl = 'https://ui-avatars.com/api/';
+    return `${baseUrl}?name=${encodeURIComponent(name)}&background=random&rounded=true`;
+  };
+
   return (
     <div className='flex flex-col items-center justify-center p-6 space-y-6 bg-gradient-to-b from-gray-100 via-gray-200 to-gray-300 min-h-screen'>
       <h1 className="text-3xl font-bold text-gray-800">
@@ -51,25 +57,43 @@ function About() {
         <div className='text-center'>
           <p className="text-2xl font-semibold text-gray-700 mb-4">{data.Title}</p>
           {data.Poster && (
-            <img src={data.Poster} alt="Movie Poster" className='w-full max-w-md rounded-lg shadow-lg border-2 border-gray-200' />
+            <img 
+              src={data.Poster} 
+              alt="Movie Poster" 
+              className='w-full max-w-md rounded-lg shadow-lg border-2 border-gray-200 mb-4' 
+            />
           )}
           <p className="mt-4 text-lg text-gray-600">
             <span className="font-semibold text-gray-800">Synopsis: </span>
             {data.Plot || "No synopsis available."}
           </p>
           <p className="mt-2 text-lg text-gray-600">
-            <span className="font-semibold text-gray-800">Actors: </span>
-            {data.Actors || "No cast information available."}
-          </p>
-          <p className="mt-2 text-lg text-gray-600">
             <span className="font-semibold text-gray-800">Director: </span>
             {data.Director || "No director information available."}
           </p>
+          <div className="mt-4">
+            <h3 className="text-xl font-semibold text-gray-800">Cast</h3>
+            <div className="flex flex-wrap items-center justify-center gap-4 mt-2">
+              {data.Actors 
+                ? data.Actors.split(', ').map((actor) => (
+                  <div key={actor} className="flex flex-col items-center">
+                    <img 
+                      src={getCharacterImage(actor)} 
+                      alt={`${actor} Profile`} 
+                      className="w-20 h-20 rounded-full shadow-lg border border-gray-300"
+                    />
+                    <p className="mt-2 text-sm text-gray-700 font-medium">{actor}</p>
+                  </div>
+                ))
+                : <p>No cast information available.</p>
+              }
+            </div>
+          </div>
           {data.Poster && (
             <a 
               href={data.Poster} 
               download={`${data.Title}-Poster.jpg`} 
-              className='mt-4 inline-block p-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-200 shadow focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2'
+              className='mt-6 inline-block p-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-200 shadow focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2'
             >
               Download Poster
             </a>
