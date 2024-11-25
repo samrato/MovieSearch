@@ -5,8 +5,7 @@ function About() {
   const [data, setData] = useState(null)
   const { id } = useParams()
   const [title, setTitle] = useState('')
-  const [showPopup, setShowPopup] = useState(false)
-
+  
   const handleChange = (e) => {
     setTitle(e.target.value)
   }
@@ -31,7 +30,6 @@ function About() {
       const response = await fetch(`${OMDBLink}/?t=${title}&apikey=${APIkey}`)
       const result = await response.json()
       setData(result)
-      setShowPopup(true) // Show popup with movie data
     } catch (error) {
       console.error("Error fetching data:", error)
     }
@@ -86,7 +84,7 @@ function About() {
               <span className="font-semibold text-gray-800">Director: </span>
               {data.Director || "No director information available."}
             </p>
-            <div className="mt-6 w-full">
+            <div className="mt-6">
               <h3 className="text-lg font-semibold text-gray-800 mb-2">Cast</h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                 {data.Actors 
@@ -104,6 +102,15 @@ function About() {
                 }
               </div>
             </div>
+            {data.Poster && (
+              <a 
+                href={data.Poster} 
+                download={`${data.Title.replace(/\s+/g, '_')}-Poster.jpg`}
+                className='mt-6 inline-block p-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-200 shadow focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2'
+              >
+                Download Poster
+              </a>
+            )}
           </div>
         </div>
       )}
