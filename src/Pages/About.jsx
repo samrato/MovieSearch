@@ -57,11 +57,13 @@ function About() {
         <div className='text-center'>
           <p className="text-2xl font-semibold text-gray-700 mb-4">{data.Title}</p>
           {data.Poster && (
-            <img 
-              src={data.Poster} 
-              alt="Movie Poster" 
-              className='w-full max-w-md rounded-lg shadow-lg border-2 border-gray-200 mb-4' 
-            />
+            <div className="flex justify-center items-center">
+              <img 
+                src={data.Poster} 
+                alt="Movie Poster" 
+                className="w-full max-w-md rounded-lg shadow-lg border-2 border-gray-200 mb-4" 
+              />
+            </div>
           )}
           <p className="mt-4 text-lg text-gray-600">
             <span className="font-semibold text-gray-800">Synopsis: </span>
