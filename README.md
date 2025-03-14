@@ -28,7 +28,7 @@ The **Movie Search app** allows users to search for movies by title using an ext
 - **Advanced Filters**: Add options for sorting and filtering movies based on genres, ratings, or release year.
 
 ## Screenshots:
-![Movie Search Screenshot 1](/home/activator/Documents/screenshot/movie seac/image(2).png)
+![Movie Search Screenshot 1]()
 *Search Results Screen*
 
 ![Movie Search Screenshot 2](path_to_image/image(3).png)
